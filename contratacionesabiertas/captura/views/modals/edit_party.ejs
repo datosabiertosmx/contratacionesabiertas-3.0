@@ -1,0 +1,491 @@
+<form id="update_party_form">
+    <input type="text" name="contractingprocess_id" value = "<%= data.contractingprocess_id %>" hidden>
+    <input type="text" name="parties_id" value = "<%= data.id %>" hidden>
+
+     <div class="row col-xs-12">
+        <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Miembro de <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu">
+            <li data-action="new_memberof"  data-id="<%= data.id %>"><a href="javascript:void(0)">Nuevo</a></li>
+            <li data-action="edit_memberof" data-id="<%= data.id %>"><a href="javascript:void(0)">Editar</a></li>
+        </ul>
+    </div>
+
+    <p><br><br><br>
+        <label>Nombre común *<!--Name--></label>
+        <input name="name" type="text" class="form-control" value="<%= data.name %>" required></p>
+
+    <p>
+        <label>Identificador del actor *</label>
+        <input name="partyid" type="text" class="form-control" value="<%= data.partyid %>" readonly required>
+    </p>
+    
+    <p>
+        <label>Cargo</label>
+        <input name="position" type="text" class="form-control" value="<%= data.position %>">
+    </p>
+    
+    <hr>
+    <h4>Identificador principal</h4>
+    
+    <p>
+        <label data-tooltip="crear_proceso">¿Es persona física?</label>
+        <select name="naturalperson" id="naturalperson" class="form-control"
+        onchange="esPersonaFisica($('#naturalperson').val());">
+
+            <option value="<%= data.naturalperson %>"
+              	parties.naturalperson === 'selected'
+                > <%= data.naturalperson? 'Si':'No' %> </option>
+            <option value="<%= !data.naturalperson %>"
+                parties.naturalperson === 'selected'
+                > <%= data.naturalperson? 'No':'Si' %> </option>
+        </select>
+    </p>
+    
+    <br>
+    
+    <div class="row">
+		    
+    	<div class="col-sm-6">
+    		
+    		<label data-tooltip="crear_proceso" title='El identificador principal de este actor. Los identificadores que señalan exclusivamente una entidad legal deben ser preferidos. Consulte la "Orientación del identificador de la organización" para el esquema preferido y el identificador a utilizar.'>
+    		<h4>Persona moral</h4></label>
+    		
+    		<p><label>Nombre o razón social *<!--Identifier legal name--></label>
+        <input id="identifier_legalname" name = "identifier_legalname" class="form-control" type="text" value="<%= data.identifier_legalname %>" required <%= data.naturalperson? 'disabled' : '' %>></p>
+        
+        </div>
+    	
+		<div class="col-sm-6">
+		<label data-tooltip="crear_proceso" title='El identificador principal de este actor. Los identificadores que señalan exclusivamente una entidad legal deben ser preferidos. Consulte la "Orientación del identificador de la organización" para el esquema preferido y el identificador a utilizar.'>
+    		<h4>Persona física</h4></label>
+     <p>
+        <label>Nombre *<!--Name--></label>
+        <input id= "givenname" name="givenname" type="text" class="form-control" value="<%= data.givenname %>" required <%= !data.naturalperson ? 'disabled' : '' %>></p>
+
+    <p>
+    <p>
+        <label>
+        Primer Apellido *</label>
+        <input id="surname" name="surname" type="text" class="form-control"  value="<%= data.surname %>" required <%= !data.naturalperson ? 'disabled' : '' %>>
+    </p>
+    <p>
+        <label>
+        Segundo Apellido *</label>
+        <input id="additionalsurname" name="additionalsurname" type="text" class="form-control" value="<%= data.additionalsurname %>" required <%= !data.naturalperson ? 'disabled' : '' %>>
+    </p>
+    </div>
+</div>
+
+
+<!-- ########################################################################## MODIFICADO ##################################### -->
+    <p><label>Esquema *<!--Identifier scheme--></label>
+        <select name="identifier_scheme" class="form-control" id='identifier_scheme' required>
+            <option value="" <%= '' == data.identifier_scheme ? 'selected' : '' %>>Seleccionar un esquema</option>
+            <option value="MX-RFC" <%= 'MX-RFC' == data.identifier_scheme ? 'selected' : '' %>>MX-RFC</option>
+            <option value="MX-INTERNO" <%= 'MX-INTERNO' == data.identifier_scheme ? 'selected' : '' %>>MX-INTERNO</option>
+        </select>
+        <!-- <input name = "identifier_scheme" class="form-control" type="text" value="<%= data.identifier_scheme %>" onChange="validarVacio(this);" required></p> -->
+<!-- ########################################################################## MODIFICADO ##################################### -->
+
+
+    <p><label>Identificador<!--Identifier ID--></label>
+        <input name = "identifier_id" class="form-control" type="text" id="identifier_id" onblur="validarIdentificador();" value="<%= data.identifier_id %>" required></p>
+
+    <hr>
+    
+    <h4>Domicilio</h4>
+
+    <p><label>Tipo de vialidad</label>
+        <select name="address_typeofroad" class="form-control">
+            <option value="" <%= '' == data.address_typeofroad ? 'selected' : '' %>>- Seleccionar -</option>
+            <option value="Ampliación" <%= 'Ampliación' == data.address_typeofroad ? 'selected' : '' %>>Ampliación</option>
+            <option value="Andador" <%= 'Andador' == data.address_typeofroad ? 'selected' : '' %>>Andador</option>
+            <option value="Avenida" <%= 'Avenida' == data.address_typeofroad ? 'selected' : '' %>>Avenida</option>
+            <option value="Boulevard" <%= 'Boulevard' == data.address_typeofroad ? 'selected' : '' %>>Boulevard</option>
+            <option value="Brecha" <%= 'Brecha' == data.address_typeofroad ? 'selected' : '' %>>Brecha</option>
+            <option value="Calle" <%= 'Calle' == data.address_typeofroad ? 'selected' : '' %>>Calle</option>
+            <option value="Callejón" <%= 'Callejón' == data.address_typeofroad ? 'selected' : '' %>>Callejón</option>
+            <option value="Calzada" <%= 'Calzada' == data.address_typeofroad ? 'selected' : '' %>>Calzada</option>
+            <option value="Camino" <%= 'Camino' == data.address_typeofroad ? 'selected' : '' %>>Camino</option>
+            <option value="Carretera" <%= 'Carretera' == data.address_typeofroad ? 'selected' : '' %>>Carretera</option>
+            <option value="Cerrada" <%= 'Cerrada' == data.address_typeofroad ? 'selected' : '' %>>Cerrada</option>
+            <option value="Circuito" <%= 'Circuito' == data.address_typeofroad ? 'selected' : '' %>>Circuito</option>
+            <option value="Circunvalación" <%= 'Circunvalación' == data.address_typeofroad ? 'selected' : '' %>>Circunvalación</option>
+            <option value="Continuación" <%= 'Continuación' == data.address_typeofroad ? 'selected' : '' %>>Continuación</option>
+            <option value="Corredor" <%= 'Corredor' == data.address_typeofroad ? 'selected' : '' %>>Corredor</option>
+            <option value="Diagonal" <%= 'Diagonal' == data.address_typeofroad ? 'selected' : '' %>>Diagonal</option>
+            <option value="Eje vial" <%= 'Eje vial' == data.address_typeofroad ? 'selected' : '' %>>Eje vial</option>
+            <option value="Pasaje" <%= 'Pasaje' == data.address_typeofroad ? 'selected' : '' %>>Pasaje</option>
+            <option value="Peatonal" <%= 'Peatonal' == data.address_typeofroad ? 'selected' : '' %>>Peatonal</option>
+            <option value="Periférico" <%= 'Periférico' == data.address_typeofroad ? 'selected' : '' %>>Periférico</option>
+            <option value="Privada" <%= 'Privada' == data.address_typeofroad ? 'selected' : '' %>>Privada</option>
+            <option value="Prolongación" <%= 'Prolongación' == data.address_typeofroad ? 'selected' : '' %>>Prolongación</option>
+            <option value="Retorno" <%= 'Retorno' == data.address_typeofroad ? 'selected' : '' %>>Retorno</option>
+            <option value="Terracería" <%= 'Terracería' == data.address_typeofroad ? 'selected' : '' %>>Terracería</option>
+            <option value="Vereda" <%= 'Vereda' == data.address_typeofroad ? 'selected' : '' %>>Vereda</option>
+            <option value="Viaducto" <%= 'Viaducto' == data.address_typeofroad ? 'selected' : '' %>>Viaducto</option>
+        </select>
+    </p>
+
+    <p><label data-tooltip="crear_proceso" title='Nombre de vialidad. Por ejemplo, Insurgentes Sur.'>
+        Nombre de vialidad</label>
+        <input name="address_streetaddress" type="text" class="form-control" value="<%= data.address_streetaddress %>" ></p>
+        
+    <div class="row">        
+        <div class="col-sm-6">            
+            <p>
+                <label data-tooltip="crear_proceso">Número exterior</label>
+                <input name="address_outdoornumber" type="text" class="form-control" value="<%= data.address_outdoornumber %>" >
+            </p>
+        </div>     
+        <div class="col-sm-6">
+            <p>
+                <label data-tooltip="crear_proceso">Número interior</label>
+                <input name="address_interiornumber" type="text" class="form-control" value="<%= data.address_interiornumber %>" >
+            </p>
+        </div>
+    </div>
+
+    <p><label>Tipo de asentamiento</label>
+        <select name="address_typeofsettlement" class="form-control">
+            <option value="">- Seleccionar -</option>
+            <option value="aeropuerto" <%= 'aeropuerto' == data.address_typeofsettlement ? 'selected' : '' %>>Aeropuerto</option>
+            <option value="ampliacion" <%= 'ampliacion' == data.address_typeofsettlement ? 'selected' : '' %>>Ampliación</option>
+            <option value="barrio" <%= 'barrio' == data.address_typeofsettlement ? 'selected' : '' %>>Barrio</option>
+            <option value="canton" <%= 'canton' == data.address_typeofsettlement ? 'selected' : '' %>>Cantón</option>
+            <option value="ciudad" <%= 'ciudad' == data.address_typeofsettlement ? 'selected' : '' %>>Ciudad</option>
+            <option value="ciudadIndustrial" <%= 'ciudadIndustrial' == data.address_typeofsettlement ? 'selected' : '' %>>Ciudad industrial</option>
+            <option value="colonia" <%= 'colonia' == data.address_typeofsettlement ? 'selected' : '' %>>Colonia</option>
+            <option value="condominio" <%= 'condominio' == data.address_typeofsettlement ? 'selected' : '' %>>Condominio</option>
+            <option value="conjuntoHabitacional" <%= 'conjuntoHabitacional' == data.address_typeofsettlement ? 'selected' : '' %>>Conjunto habitacional</option>
+            <option value="corredorIndustrial" <%= 'corredorIndustrial' == data.address_typeofsettlement ? 'selected' : '' %>>Corredor industrial</option>
+            <option value="coto" <%= 'coto' == data.address_typeofsettlement ? 'selected' : '' %>>Coto</option>
+            <option value="cuartel" <%= 'cuartel' == data.address_typeofsettlement ? 'selected' : '' %>>Cuartel</option>
+            <option value="ejido" <%= 'ejido' == data.address_typeofsettlement ? 'selected' : '' %>>Ejido</option>
+            <option value="exhacienda" <%= 'exhacienda' == data.address_typeofsettlement ? 'selected' : '' %>>Exhacienda</option>
+            <option value="fraccion" <%= 'fraccion' == data.address_typeofsettlement ? 'selected' : '' %>>Fracción</option>
+            <option value="fraccionamiento" <%= 'fraccionamiento' == data.address_typeofsettlement ? 'selected' : '' %>>Fraccionamiento</option>
+            <option value="granja" <%= 'granja' == data.address_typeofsettlement ? 'selected' : '' %>>Granja</option>
+            <option value="hacienda" <%= 'hacienda' == data.address_typeofsettlement ? 'selected' : '' %>>Hacienda</option>
+            <option value="ingenio" <%= 'ingenio' == data.address_typeofsettlement ? 'selected' : '' %>>Ingenio</option>
+            <option value="manzana" <%= 'manzana' == data.address_typeofsettlement ? 'selected' : '' %>>Manzana</option>
+            <option value="paraje" <%= 'paraje' == data.address_typeofsettlement ? 'selected' : '' %>>Paraje</option>
+            <option value="parqueIndustrial" <%= 'parqueIndustrial' == data.address_typeofsettlement ? 'selected' : '' %>>Parque industrial</option>
+            <option value="privada" <%= 'privada' == data.address_typeofsettlement ? 'selected' : '' %>>Privada</option>
+            <option value="prolongacion" <%= 'prolongacion' == data.address_typeofsettlement ? 'selected' : '' %>>Prolongación</option>
+            <option value="pueblo" <%= 'pueblo' == data.address_typeofsettlement ? 'selected' : '' %>>Pueblo</option>
+            <option value="puerto" <%= 'puerto' == data.address_typeofsettlement ? 'selected' : '' %>>Puerto</option>
+            <option value="rancheria" <%= 'rancheria' == data.address_typeofsettlement ? 'selected' : '' %>>Ranchería</option>
+            <option value="rancho" <%= 'rancho' == data.address_typeofsettlement ? 'selected' : '' %>>Rancho</option>
+            <option value="region" <%= 'region' == data.address_typeofsettlement ? 'selected' : '' %>>Región</option>
+            <option value="residencial" <%= 'residencial' == data.address_typeofsettlement ? 'selected' : '' %>>Residencial</option>
+            <option value="rinconada" <%= 'rinconada' == data.address_typeofsettlement ? 'selected' : '' %>>Rinconada</option>
+            <option value="seccion" <%= 'seccion' == data.address_typeofsettlement ? 'selected' : '' %>>Sección</option>
+            <option value="sector" <%= 'sector' == data.address_typeofsettlement ? 'selected' : '' %>>Sector</option>
+            <option value="supermanzana" <%= 'supermanzana' == data.address_typeofsettlement ? 'selected' : '' %>>Supermanzana</option>
+            <option value="unidad" <%= 'unidad' == data.address_typeofsettlement ? 'selected' : '' %>>Unidad</option>
+            <option value="unidadHabitacional" <%= 'unidadHabitacional' == data.address_typeofsettlement ? 'selected' : '' %>>Unidad habitacional</option>
+            <option value="villa" <%= 'villa' == data.address_typeofsettlement ? 'selected' : '' %>>Villa</option>
+            <option value="zonaFederal" <%= 'zonaFederal' == data.address_typeofsettlement ? 'selected' : '' %>>Zona federal</option>
+            <option value="zonaIndustrial" <%= 'zonaIndustrial' == data.address_typeofsettlement ? 'selected' : '' %>>Zona industrial</option>
+            <option value="zonaMilitar" <%= 'zonaMilitar' == data.address_typeofsettlement ? 'selected' : '' %>>Zona militar</option>
+            <option value="zonaNaval" <%= 'zonaNaval' == data.address_typeofsettlement ? 'selected' : '' %>>Zona naval</option>
+        </select>
+    </p>
+
+    <p><label>Nombre del asentamiento</label>
+        <input name="address_settlementname" type="text" class="form-control" value="<%= data.address_settlementname %>">
+    </p>
+
+    <p><label>Entidad federativa<!--Address region--></label>
+        <select id="address_region" name="address_region" class="form-control">
+            <option value="">- Seleccionar -</option>
+        </select>
+    </p>
+    <!--<p><label data-tooltip="crear_proceso">Clave de la Entidad federativa</label>-->
+        <input id="address_regionkey" name="address_regionkey" type="hidden" class="form-control" value="<%= data.address_regionkey %>"></p>
+
+    <p><label>Alcaldía o municipio<!--Address locality--></label>
+        <select id="address_locality" name="address_locality" class="form-control">
+            <option value="">- Seleccionar -</option>
+        </select>
+    <!--<p><label data-tooltip="crear_proceso">Clave de la Alcaldía o Municipio</label>-->
+        <input id="address_alcaldiakey" name="address_alcaldiakey" type="hidden" class="form-control" value="<%= data.address_alcaldiakey %>"></p>
+
+    <p><label>Nombre de la localidad</label>
+        <select id="address_locationname" name="address_locationname" class="form-control">
+            <option value="">- Seleccionar -</option>
+        </select>
+    </p>
+    <!--<p><label data-tooltip="crear_proceso">Clave de la localidad</label>-->
+        <input id="address_localitykey" name="address_localitykey" type="hidden" class="form-control" value="<%= data.address_localitykey %>"></p>
+
+    <p><label>Código postal<!--Address postal code--></label>
+        <input name="address_postalcode" type="text" class="form-control" value="<%= data.address_postalcode %>" onChange="validarCodigo(this);"></p>
+
+    <p><label>País<!--Address country name--></label>
+        <input name="address_countryname" type="text" class="form-control" value="<%= data.address_countryname %>"></p>
+    
+        <input id="region_text" name="region_text" type="hidden" class="form-control">
+        <input id="locality_text" name="locality_text" type="hidden" class="form-control">
+        <input id="locationname_text" name="locationname_text" type="hidden" class="form-control">
+
+    <hr>
+
+    <h4>Domicilio en el extranjero</h4>
+
+    <p><label data-tooltip="crear_proceso">Calle</label>
+        <input name="address_streetabroad" type="text" class="form-control" value="<%= data.address_streetabroad %>"></p>
+            
+    <p><label data-tooltip="crear_proceso">Número</label>
+        <input name="address_numberabroad" type="text" class="form-control" value="<%= data.address_numberabroad %>"></p>
+            
+    <p><label data-tooltip="crear_proceso">Ciudad</label>
+        <input name="address_cityabroad" type="text" class="form-control" value="<%= data.address_cityabroad %>"></p>
+
+    <p><label data-tooltip="crear_proceso">País</label>
+        <input name="address_countryabroad" type="text" class="form-control" value="<%= data.address_countryabroad %>"></p>
+    
+    <hr>
+
+    <h4>Punto de contacto</h4>
+    <p><label>Tipo de punto de contacto</label>
+        <select name="contactpoint_type" class="form-control">
+            <option value="" <%= '' == data.contactpoint_type ? 'selected' : '' %>>- Seleccionar -</option>
+            <option value="contactPoint" <%= 'contactPoint' == data.contactpoint_type ? 'selected' : '' %>>Punto de contacto</option>
+            <option value="attorney" <%= 'attorney' == data.contactpoint_type ? 'selected' : '' %>>Representante legal o apoderado</option>
+        </select></p>
+    <p><label>Nombre<!--Contact point name--></label>
+        <input name="contactpoint_givenname" type="text" class="form-control" value="<%= data.contactpoint_givenname || data.contactpoint_name %>"></p>
+    <p>
+        <label>
+        Primer Apellido</label>
+        <input name="contactpoint_surname" type="text" value="<%= data.contactpoint_surname %>" class="form-control">
+    </p>
+
+    <p>
+        <label>
+        Segundo Apellido</label>
+        <input name="contactpoint_additionalsurname" value="<%= data.contactpoint_additionalsurname %>" type="text" class="form-control">
+    </p>
+
+
+    <p><label>Correo electrónico<!--Contact point email--></label>
+        <input name="contactpoint_email" type="text" class="form-control" value="<%= data.contactpoint_email %>"></p>
+    <p><label>Teléfono<!--Contact point telephone--></label>
+        <input name="contactpoint_telephone"  type="text" class="form-control" value="<%= data.contactpoint_telephone %>"></p>
+    <p><label>Número de fax<!--Contact point fax number--></label>
+        <input name="contactpoint_faxnumber" type="text" class="form-control" value="<%= data.contactpoint_faxnumber %>"></p>
+    <p><label>URL<!--Contact point url--></label>
+        <input name="contactpoint_url"    type="url" class="form-control" value="<%= data.contactpoint_url %>"></p>
+
+        <hr>
+    <div class="row col-xs-12">
+        <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Punto de contacto adicional <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu">
+            <li data-action="new_contactpoint"  data-id="<%= data.id %>"><a href="javascript:void(0)">Nuevo</a></li>
+            <li data-action="edit_contactpoints" data-id="<%= data.id %>"><a href="javascript:void(0)">Editar</a></li>
+        </ul>
+    </div>
+<br><br><br>
+        <label>Papeles del actor *</label>
+    <div class="well">
+        <label class="checkbox-inline"><input name="contractingunit" type="checkbox"  <%= roles.contractingunit?'checked':'' %>>Área contratante</label><br>
+        <label class="checkbox-inline"><input name="requestingunit" type="checkbox"  <%= roles.requestingunit?'checked':'' %>>Área requirente</label><br>
+        <label class="checkbox-inline"><input name="technicalunit" type="checkbox"  <%= roles.technicalunit?'checked':'' %>>Área técnica</label><br>
+        <label class="checkbox-inline"><input name="responsibleunit" type="checkbox" <%= roles.responsibleunit?'checked':'' %>>Área responsable de la ejecución</label><br>
+        <label class="checkbox-inline"><input name="attendee" type="checkbox"  <%= roles.attendee?'checked':'' %>>Asistente a junta de aclaraciones</label><br>
+        <label class="checkbox-inline"><input name="reviewBody" type="checkbox"  <%= roles.reviewbody?'checked':'' %>>Auditor</label><br>
+        <label class="checkbox-inline"><input name="payer" type="checkbox"  <%= roles.payer?'checked':'' %>>Emisor del pago</label><br>
+        <label class="checkbox-inline"><input name="buyer" type="checkbox"  <%= roles.buyer?'checked':'' %>>Entidad compradora</label><br>
+        <label class="checkbox-inline"><input name="procuringEntity" type="checkbox"  <%= roles.procuringentity?'checked':'' %>>Entidad contratante</label><br>
+        <label class="checkbox-inline"><input name="guarantor" type="checkbox"  <%= roles.guarantor?'checked':'' %>>Institución que expide la garantía</label><br>
+        <label class="checkbox-inline"><input name="tenderer" type="checkbox"  <%= roles.tenderer?'checked':'' %>>Licitante</label><br>
+        <label class="checkbox-inline"><input name="enquirer" type="checkbox"  <%= roles.enquirer?'checked':'' %>>Persona física o moral que solicita aclaraciones</label><br>
+        <label class="checkbox-inline"><input name="issuingSupplier" type="checkbox"  <%= roles.issuingsupplier?'checked':'' %>>Persona física o moral que envía cotización (investigación de mercado)</label><br>
+    	<label class="checkbox-inline"><input name="invitedSupplier" type="checkbox"  <%= roles.invitedsupplier?'checked':'' %>>Persona física o moral invitada a cotizar (investigación de mercado)</label><br>
+    	<label class="checkbox-inline"><input name="supplier" type="checkbox"  <%= roles.supplier?'checked':'' %>>Proveedor o contratista</label><br>
+    	<label class="checkbox-inline"><input name="payee" type="checkbox"  <%= roles.payee?'checked':'' %>>Receptor de pago</label><br>
+        <label class="checkbox-inline"><input name="official" type="checkbox"  <%= roles.official?'checked':'' %>>Servidor público asistente a junta de aclaraciones</label><br>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-6">
+            <button type="submit" class="btn btn-default">Guardar</button>
+        </div>
+    </div>
+
+</form>
+
+<script>
+    function validarVacio (input) {
+        input.value = input.value.trim();
+    }
+
+    function esPersonaFisica(persona) {     
+        if(persona === 'true') {
+            $('#givenname').val(''); 
+            $('#givenname').prop( "disabled", false );
+            $('#surname').val('');
+            $('#surname').prop( "disabled", false ); 
+            $('#additionalsurname').val('');
+            $('#additionalsurname').prop( "disabled", false );
+            $('#identifier_legalname').val('');
+            $('#identifier_legalname').prop( "disabled", true );
+        } else {
+            $('#givenname').val(''); 
+            $('#givenname').prop( "disabled", true );
+            $('#surname').val('');
+            $('#surname').prop( "disabled", true ); 
+            $('#additionalsurname').val('');
+            $('#additionalsurname').prop( "disabled", true );
+            $('#identifier_legalname').val('');
+            $('#identifier_legalname').prop( "disabled", false );
+        }
+    }
+
+    function validarCodigo(input){
+        input.value = input.value.trim();
+        if(input.value.length == 5){
+            //No modifica el dato
+        }else{
+            alert("La longitud del código postal no es correcta. Considere que en México el código postal se compone de 5 dígitos.")
+            input.value = "";
+        }
+    }
+
+    $('[name="identifier_scheme"], [name="identifier_id"]').on('change', function() {
+        var scheme = $('[name="identifier_scheme"]').val();
+        var id = $('[name="identifier_id"]').val();
+
+        if (scheme == '' && id == '')
+            $('[name="partyid"]').val('');
+        else
+            $('[name="partyid"]').val(scheme + '-' + id);
+    });
+
+    
+    $( document ).ready(function() {
+        $.ajax({
+            type: 'GET',
+            url: "https://gaia.inegi.org.mx/wscatgeo/mgee/",
+            cache: false,
+            async: false,
+            dataType: "json",
+            success: function (data) {
+                for (var i = 0; i < data.datos.length; i++) {
+                            $("#address_region").append(`<option value="${data.datos[i].cve_agee}"> ${data.datos[i].nom_agee} </option>`); 
+                        } 
+            }, error: function (objeto, tipo, causa) {
+                return error;
+            }
+        });
+        $('#address_region').val($('#address_regionkey').val());
+        $.ajax({
+            type: 'GET',
+            url: `https://gaia.inegi.org.mx/wscatgeo/mgem/${$('#address_regionkey').val()}/`,
+            cache: false,
+            async: false,
+            dataType: "json",
+            success: function (data) {
+                for (var i = 0; i < data.datos.length; i++) {
+                            $("#address_locality").append(`<option value="${data.datos[i].cve_agem}"> ${data.datos[i].nom_agem} </option>`); 
+                        } 
+            }, error: function (objeto, tipo, causa) {
+                return error;
+            }
+        });
+        $("#address_locality").val($('#address_alcaldiakey').val());
+        $.ajax({
+            type: 'GET',
+            url: `https://gaia.inegi.org.mx/wscatgeo/asentamientos/${$("#address_region").val()}${$('#address_alcaldiakey').val()}0001/`,
+            cache: false,
+            async: false,
+            dataType: "json",
+            success: function (data) {
+                for (var i = 0; i < data.datos.length; i++) {
+                            $("#address_locationname").append(`<option value="${data.datos[i].cve_asen}"> ${data.datos[i].nom_asen} </option>`); 
+                        } 
+            }, error: function (objeto, tipo, causa) {
+                return error;
+            }
+        });
+        $('#address_locationname').val($('#address_localitykey').val());
+    });
+
+    $('#address_region').change(function() {
+        $("#address_regionkey").val($('#address_region').val());
+    });
+    $('#address_region').change(function() {
+        $('#address_locality').prop('disabled', false);
+        $('#address_locality').empty();                   
+        $('#address_locationname').empty();
+        $('#address_locationname').prop('disabled', true);                   
+        $('#address_alcaldiakey').val("");                   
+        $('#address_localitykey').val("");                   
+        $.ajax({
+            type: 'GET',
+            url: `https://gaia.inegi.org.mx/wscatgeo/mgem/${$(this).val()}/`,
+            cache: false,
+            async: false,
+            dataType: "json",
+            success: function (data) {
+                for (var i = 0; i < data.datos.length; i++) {
+                            $("#address_locality").append(`<option value="${data.datos[i].cve_agem}"> ${data.datos[i].nom_agem} </option>`); 
+                        } 
+            }, error: function (objeto, tipo, causa) {
+                return error;
+            }
+        }); 
+    });
+    $('#address_locality').change(function() {
+        $("#address_alcaldiakey").val($('#address_locality').val());
+    });
+    $('#address_locality').change(function() {
+        $('#address_locationname').prop('disabled', false);
+        $('#address_locationname').empty();                 
+        $('#address_localitykey').val("");
+        $.ajax({
+            type: 'GET',
+            url: `https://gaia.inegi.org.mx/wscatgeo/asentamientos/${$("#address_region").val()}${$(this).val()}0001/`,
+            cache: false,
+            async: false,
+            dataType: "json",
+            success: function (data) {
+                for (var i = 0; i < data.datos.length; i++) {
+                            $("#address_locationname").append(`<option value="${data.datos[i].cve_asen}"> ${data.datos[i].nom_asen} </option>`); 
+                        } 
+            }, error: function (objeto, tipo, causa) {
+                return error;
+            }
+        }); 
+    });
+    $('#address_locationname').change(function() {
+        $("#address_localitykey").val($('#address_locationname').val());
+    });
+
+    function validarIdentificador() {
+        const identifierScheme = document.getElementById('identifier_scheme').value;
+        const isNaturalPerson = document.getElementById('naturalperson').selectedIndex === 0;
+        const identifierInput = document.getElementById('identifier_id');
+        const identifierValue = identifierInput.value.trim();
+
+        // Solo valida si el campo de identificador no está vacío
+        if (identifierValue === "") return;
+        // Validación según el esquema y tipo de persona
+        if (identifierScheme === "MX-RFC") {
+            if (isNaturalPerson && identifierValue.length !== 13) {
+                alert("La longitud del identificador no coincide con el esquema seleccionado. Para personas físicas, debe ser de 13 caracteres.");
+                identifierInput.value = "";
+            } else if (!isNaturalPerson && identifierValue.length !== 12) {
+                alert("La longitud del identificador no coincide con el esquema seleccionado. Para personas morales, debe ser de 12 caracteres.");
+                identifierInput.value = "";
+            }
+        }
+}
+
+</script>
