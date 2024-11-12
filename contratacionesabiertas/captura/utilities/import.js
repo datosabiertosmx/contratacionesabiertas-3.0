@@ -914,6 +914,7 @@ function Import(contractingproessid, database, numberStage, registerid) {
                     record.executed = record.executed || 0;
                     record.committed = record.committed || 0;
                     record.reserved = record.reserved || 0;
+                    record.trimester = record.trimester || 0;
 
 
 
