@@ -61,7 +61,7 @@ $("#adminModal").on('show.bs.modal', function (event) {
             break;
             
         case 'manage_metadata':
-            modal.find('.modal-title').text('Licencia y Pólitica de Publicación');
+            modal.find('.modal-title').text('Licencia y Política de Publicación');
             modal.find('#modal_content').html("");
             modal.find('#modal_content').load('/admin/metadata.html', () => {
                 $('#frmMetadata').submit((e) => {
@@ -107,7 +107,7 @@ $("#adminModal").on('show.bs.modal', function (event) {
             });
             break;
         case 'manage_policy':
-            modal.find('.modal-title').text('Editar pólitica de publicación');
+            modal.find('.modal-title').text('Editar política de publicación');
             modal.find('#modal_content').html("");
             modal.find('#modal_content').load('/admin/policy', () => {
                 modal.find('#update_policy_form').submit(function(e) {
