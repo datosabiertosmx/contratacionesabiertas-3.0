@@ -483,7 +483,7 @@
                 alert("La longitud del identificador no coincide con el esquema seleccionado. Para personas morales, debe ser de 12 caracteres.");
                 identifierInput.value = "";
             }
-        }else{
+        }else if(identifierScheme === "MX-INTERNO"){
             if(identifierValue.length < 1){
                 alert("La longitud del identificador debe de contener al menos un caracter.");
                 identifierInput.value = "";

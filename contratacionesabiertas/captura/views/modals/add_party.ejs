@@ -386,9 +386,6 @@
     const identifierInput = document.getElementById('identifier_id');
     const identifierValue = identifierInput.value.trim();
 
-    // Solo valida si el campo de identificador no está vacío
-    if (identifierValue === "") return;
-
     // Validación según el esquema y tipo de persona
     if (identifierScheme === "MX-RFC") {
         if (isNaturalPerson && identifierValue.length !== 13) {
@@ -396,6 +393,11 @@
             identifierInput.value = "";
         } else if (!isNaturalPerson && identifierValue.length !== 12) {
             alert("La longitud del identificador no coincide con el esquema seleccionado. Para personas morales, debe ser de 12 caracteres.");
+            identifierInput.value = "";
+        }
+    }else if(identifierScheme === "MX-INTERNO"){
+        if(identifierValue.length < 1){
+            alert("La longitud del identificador debe de contener al menos un caracter.");
             identifierInput.value = "";
         }
     }
